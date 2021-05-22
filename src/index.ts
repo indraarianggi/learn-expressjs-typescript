@@ -5,8 +5,10 @@ import compression from "compression";
 import helmet from "helmet";
 import cors from "cors";
 import { config as dotenv } from "dotenv";
+import db from "./db/models";
 
 // Routers
+import AuthRoutes from "./routers/AuthRoutes";
 import UserRoutes from "./routers/UserRoutes";
 
 class App {
@@ -15,6 +17,7 @@ class App {
     constructor() {
         this.app = express();
         this.plugins();
+        this.database();
         this.routes();
         dotenv();
     }
@@ -27,6 +30,10 @@ class App {
         this.app.use(cors());
     }
 
+    protected database(): void {
+        db.sequelize.sync();
+    }
+
     protected routes(): void {
         this.app
             .route("/")
@@ -34,7 +41,8 @@ class App {
                 res.send("Route using typescript")
             );
 
-        this.app.use("/users", UserRoutes);
+        this.app.use("/api/v1/users", UserRoutes);
+        this.app.use("/api/v1/auth", AuthRoutes);
     }
 }
 
