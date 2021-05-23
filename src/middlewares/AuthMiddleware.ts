@@ -8,7 +8,9 @@ export const auth = (
     let auth = true;
 
     if (!auth) {
-        return res.send("Not authenticated");
+        return res
+            .status(401)
+            .json({ success: false, message: "Not authenticated" });
     }
 
     next();
