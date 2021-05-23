@@ -10,6 +10,7 @@ import db from "./db/models";
 // Routers
 import AuthRoutes from "./routers/AuthRoutes";
 import UserRoutes from "./routers/UserRoutes";
+import TodoRoutes from "./routers/TodoRoutes";
 
 class App {
     public app: Application;
@@ -43,6 +44,7 @@ class App {
 
         this.app.use("/api/v1/users", UserRoutes);
         this.app.use("/api/v1/auth", AuthRoutes);
+        this.app.use("/api/v1/todos", TodoRoutes);
     }
 }
 

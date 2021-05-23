@@ -1,15 +1,15 @@
 "use strict";
 import { Model } from "sequelize";
 
-export interface IUser {
-    username: string;
-    password: string;
+export interface ITodo {
+    user_id: number;
+    description: string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
-    class user extends Model<IUser> implements IUser {
-        username!: string;
-        password!: string;
+    class todo extends Model<ITodo> implements ITodo {
+        user_id!: number;
+        description!: string;
 
         /**
          * Helper method for defining associations.
@@ -18,24 +18,28 @@ module.exports = (sequelize: any, DataTypes: any) => {
          */
         static associate(models: any) {
             // define association here
+            todo.belongsTo(models.user);
         }
     }
-    user.init(
+    todo.init(
         {
-            username: {
-                type: DataTypes.STRING,
+            user_id: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
+                references: {
+                    model: "users",
+                    key: "id",
+                },
             },
-            password: {
-                type: DataTypes.STRING,
-                allowNull: false,
+            description: {
+                type: DataTypes.TEXT,
             },
         },
         {
             sequelize,
-            modelName: "user",
+            modelName: "todo",
             underscored: true,
         }
     );
-    return user;
+    return todo;
 };
